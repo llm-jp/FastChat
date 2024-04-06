@@ -17,6 +17,15 @@ from fastchat.llm_judge.common import load_questions, temperature_config
 from fastchat.model import load_model, get_conversation_template
 from fastchat.utils import str_to_torch_dtype
 
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG, 
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler()  
+    ]
+)
 
 def run_eval(
     model_path,
@@ -111,7 +120,13 @@ def get_model_answers(
                 conv.append_message(conv.roles[0], qs)
                 conv.append_message(conv.roles[1], None)
                 prompt = conv.get_prompt()
+                logging.debug("----------------------------------------------------------")
+                logging.debug(f"prompt: {prompt}")
+                logging.debug("----------------------------------------------------------")
                 input_ids = tokenizer([prompt], add_special_tokens=False).input_ids
+                logging.debug("----------------------------------------------------------")
+                logging.debug(f"input_ids: {input_ids}")
+                logging.debug("----------------------------------------------------------")
 
                 if temperature < 1e-4:
                     do_sample = False
@@ -126,6 +141,9 @@ def get_model_answers(
                         temperature=temperature,
                         max_new_tokens=max_new_token,
                     )
+                    logging.debug("----------------------------------------------------------")
+                    logging.debug(f"output_ids: {output_ids}")
+                    logging.debug("----------------------------------------------------------")
                     if model.config.is_encoder_decoder:
                         output_ids = output_ids[0]
                     else:
@@ -145,6 +163,9 @@ def get_model_answers(
                         output_ids,
                         spaces_between_special_tokens=False,
                     )
+                    logging.debug("----------------------------------------------------------")
+                    logging.debug(f"output: {output}")
+                    logging.debug("----------------------------------------------------------")
                     if conv.stop_str and isinstance(conv.stop_str, list):
                         stop_str_indices = sorted(
                             [
