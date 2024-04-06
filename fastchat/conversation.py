@@ -1634,6 +1634,7 @@ def initialize_custom_template():
             sep=config.mtbench.conv_sep,
             stop_token_ids=eval(config.mtbench.conv_stop_token_ids),
             stop_str=config.mtbench.conv_stop_str,
+            add_special_tokens=config.mtbench.add_special_tokens,
         )
     )
 
