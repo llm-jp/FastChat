@@ -340,7 +340,7 @@ class Conversation:
             ret = self.system_message + self.sep
             for i, (role, message) in enumerate(self.messages):
                 if message:
-                    if i == 0 or i % 2 == 1:
+                    if i % 2 == 0:
                         ret += role + config.mtbench.conv_role_message_separator + message + self.sep
                     else:
                         ret += role + config.mtbench.conv_role_message_separator + message + self.sep2 + self.sep
@@ -1638,7 +1638,6 @@ def initialize_custom_template():
             sep2=config.mtbench.conv_sep2,
             stop_token_ids=eval(config.mtbench.conv_stop_token_ids),
             stop_str=config.mtbench.conv_stop_str,
-            add_special_tokens=config.mtbench.add_special_tokens,
         )
     )
 
