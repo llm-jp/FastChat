@@ -338,9 +338,12 @@ class Conversation:
         elif self.sep_style == SeparatorStyle.CUSTOM:
             config = WandbConfigSingleton.get_instance().config  # ←追加
             ret = self.system_message + self.sep
-            for role, message in self.messages:
+            for i, (role, message) in enumerate(self.messages):
                 if message:
-                    ret += role + config.mtbench.conv_role_message_separator + message + self.sep
+                    if i == 0 or i % 2 == 1:
+                        ret += role + config.mtbench.conv_role_message_separator + message + self.sep
+                    else:
+                        ret += role + config.mtbench.conv_role_message_separator + message + self.sep2 + self.sep
                 else:
                     ret += role + config.mtbench.conv_role_only_separator
             return ret
@@ -1632,6 +1635,7 @@ def initialize_custom_template():
             roles=eval(config.mtbench.conv_roles),
             sep_style=SeparatorStyle.CUSTOM,
             sep=config.mtbench.conv_sep,
+            sep2=config.mtbench.conv_sep2,
             stop_token_ids=eval(config.mtbench.conv_stop_token_ids),
             stop_str=config.mtbench.conv_stop_str,
             add_special_tokens=config.mtbench.add_special_tokens,
