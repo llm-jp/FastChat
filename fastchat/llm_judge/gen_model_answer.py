@@ -124,10 +124,11 @@ def get_model_answers(
                 logging.debug(f"prompt: {prompt}")
                 logging.debug("----------------------------------------------------------")
                 input_ids = tokenizer([prompt], add_special_tokens=False).input_ids
+                input_length = len(input_ids[0])
                 logging.debug("----------------------------------------------------------")
                 logging.debug(f"input_ids: {input_ids}")
+                logging.debug(f"input_length: {input_length}")
                 logging.debug("----------------------------------------------------------")
-
                 if temperature < 1e-4:
                     do_sample = False
                 else:
@@ -139,7 +140,7 @@ def get_model_answers(
                         torch.as_tensor(input_ids).cuda(),
                         do_sample=do_sample,
                         temperature=temperature,
-                        max_new_tokens=max_new_token,
+                        max_new_tokens=max_new_token - len(input_ids[0]),
                     )
                     logging.debug("----------------------------------------------------------")
                     logging.debug(f"output_ids: {output_ids}")
