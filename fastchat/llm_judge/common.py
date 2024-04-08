@@ -478,7 +478,7 @@ def chat_completion_openai_azure(model, conv, temperature, max_tokens, api_dict=
 
     if "azure-" in model:
         model = model[6:]
-
+    model = "gpt-4-0613"
     output = API_ERROR_OUTPUT
     for _ in range(API_MAX_RETRY):
         try:
