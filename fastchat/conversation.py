@@ -71,6 +71,8 @@ class Conversation:
     stop_token_ids: List[int] = None
     # TODO: (meng) Adhoc way to adjust tokenizer behavior (mainly for NAI tokenizer)
     add_special_tokens: bool = True
+    # start token
+    start_token: str = None
 
     def get_prompt(self) -> str:
         """Get the prompt for generation."""
@@ -337,7 +339,8 @@ class Conversation:
             return ret
         elif self.sep_style == SeparatorStyle.CUSTOM:
             config = WandbConfigSingleton.get_instance().config  # ←追加
-            ret = self.system_message + self.sep
+            ret = self.start_token + self.system_message + self.sep
+            #ret = self.system_message + self.sep
             for i, (role, message) in enumerate(self.messages):
                 if message:
                     if i % 2 == 0:
