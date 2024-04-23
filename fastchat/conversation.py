@@ -483,6 +483,7 @@ class Conversation:
         return Conversation(
             name=self.name,
             system_template=self.system_template,
+            start_token=self.start_token,
             system_message=self.system_message,
             roles=self.roles,
             messages=[[x, y] for x, y in self.messages],
@@ -1634,6 +1635,7 @@ def initialize_custom_template():
     register_conv_template(
         Conversation(
             name=config.mtbench.conv_name,
+            start_token=config.mtbench.conv_start_token,
             system_message=config.mtbench.conv_system_message,
             roles=eval(config.mtbench.conv_roles),
             sep_style=SeparatorStyle.CUSTOM,
