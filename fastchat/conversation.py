@@ -71,6 +71,8 @@ class Conversation:
     stop_token_ids: List[int] = None
     # TODO: (meng) Adhoc way to adjust tokenizer behavior (mainly for NAI tokenizer)
     add_special_tokens: bool = True
+    # The token to start the generation
+    start_token: str = None
 
     def get_prompt(self) -> str:
         """Get the prompt for generation."""
@@ -337,7 +339,8 @@ class Conversation:
             return ret
         elif self.sep_style == SeparatorStyle.CUSTOM:
             config = WandbConfigSingleton.get_instance().config  # ←追加
-            ret = self.system_message + self.sep
+            # ret = self.system_message + self.sep
+            ret = self.start_token + self.system_message + self.sep
             for i, (role, message) in enumerate(self.messages):
                 if message:
                     if i % 2 == 0:
@@ -480,6 +483,7 @@ class Conversation:
         return Conversation(
             name=self.name,
             system_template=self.system_template,
+            start_token=self.start_token,
             system_message=self.system_message,
             roles=self.roles,
             messages=[[x, y] for x, y in self.messages],
@@ -1631,6 +1635,7 @@ def initialize_custom_template():
     register_conv_template(
         Conversation(
             name=config.mtbench.conv_name,
+            start_token=config.mtbench.conv_start_token,
             system_message=config.mtbench.conv_system_message,
             roles=eval(config.mtbench.conv_roles),
             sep_style=SeparatorStyle.CUSTOM,
