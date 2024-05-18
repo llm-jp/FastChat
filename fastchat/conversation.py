@@ -344,9 +344,9 @@ class Conversation:
             for i, (role, message) in enumerate(self.messages):
                 if message:
                     if i % 2 == 0:
-                        ret += role + config.mtbench.conv_role_message_separator + message + self.sep
+                        ret += self.start_token + role + config.mtbench.conv_role_message_separator + message + self.sep
                     else:
-                        ret += role + config.mtbench.conv_role_message_separator + message + self.sep2 + self.sep
+                        ret += self.start_token + role + config.mtbench.conv_role_message_separator + message + self.sep2 + self.sep
                 else:
                     ret += role + config.mtbench.conv_role_only_separator
             return ret
