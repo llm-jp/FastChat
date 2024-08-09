@@ -140,6 +140,9 @@ def get_model_answers(
                         torch.as_tensor(input_ids).cuda(),
                         do_sample=do_sample,
                         temperature=temperature,
+                        bos_token_id=tokenizer.bos_token_id,
+                        eos_token_id=tokenizer.eos_token_id,
+                        pad_token_id=tokenizer.pad_token_id,
                         max_new_tokens=max_new_token - len(input_ids[0]),
                     )
                     logging.debug("----------------------------------------------------------")
